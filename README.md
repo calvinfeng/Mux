@@ -48,3 +48,26 @@ github_repo/
 1. Navigate to `Mux`, create an environment, source the environment, and `pip` install the dependency.
 2. Start a new project, `django-admin startproject server`.
 3. Move all files from `server/server` to `server/`.
+4. Rename the paths, for example `server.settings` to just `settings`.
+
+## Create the apps
+1. Create *api*, `python manage.py startapp api`
+2. Create *management*, `python manage.py startapp management`
+3. Add `rest_framework`, 'channels', 'management' and `api` to settings file inside `INSTALLED_APPS`
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'api',
+    'management'
+    'rest_framework',
+    'rest_framework.authtoken'
+    'channels'
+]
+```
+4. Remove `migrations/`, `admin.py`, `models.py` inside *management*.
+5. Create a `templates/` folder and `urls.py` inside *management*.
