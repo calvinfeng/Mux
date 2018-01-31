@@ -1,0 +1,11 @@
+Django==1.11.4
+django-crispy-forms
+django-markdown-deux
+django-pagedown
+markdown2
+Pillow
+djangorestframework
+markdown
+django-filter
+channels
+websocket-client
