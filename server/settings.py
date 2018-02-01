@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'api',
     'management',
     'rest_framework',
-    'rest_framework.authtoken'
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -73,7 +73,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -83,7 +82,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'server', 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -103,6 +101,29 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Specify channel layer configuration
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'ROUTING': 'routing.channel_routing',
+        'CONFIG': {
+            'hosts': [(REDIS_HOST, REDIS_PORT)],
+            'capacity': 200,
+            'expiry': 10
+        }
+    }
+}
+
+# Or we can use in-memory caching
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "asgiref.inmemory.ChannelLayer",
+        'ROUTING': "routing.channel_routing"
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -117,8 +138,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
-
-STATIC_URL = '/static/'
+# Serving static contents
+STATIC_URL = '/'
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "server", "management", "static")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "server", "management", "static")]

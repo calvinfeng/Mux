@@ -71,3 +71,41 @@ INSTALLED_APPS = [
 ```
 4. Remove `migrations/`, `admin.py`, `models.py` inside *management*.
 5. Create a `templates/` folder and `urls.py` inside *management*.
+
+## Serve static files
+In the `settings.py` file, add the following:
+```python
+STATIC_URL = '/'
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "server", "management", "static")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "server", "management", "static")]
+```
+
+Then create a `static` folder inside management app and whatever is inside will be served at the static URL, e.g.
+`localhost:8000/scripts/index.js`
+
+## Channels
+### Routing
+```python
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'asgi_redis.RedisChannelLayer',
+        'ROUTING': 'routing.channel_routing',
+        'CONFIG': {
+            'hosts': [(REDIS_HOST, REDIS_PORT)],
+            'capacity': 200,
+            'expiry': 10
+        }
+    }
+}
+
+# Or we can use in-memory caching
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "asgiref.inmemory.ChannelLayer",
+        'ROUTING': "routing.channel_routing"
+    }
+}
+```
