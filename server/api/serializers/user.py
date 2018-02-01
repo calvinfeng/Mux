@@ -36,6 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         return field_value
 
+    @transaction.atomic
     def create(self, validated_data):
         """Overriding default create method"""
         new_user = User(username=validated_data['username'], email=validated_data['email'])

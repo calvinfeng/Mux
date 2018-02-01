@@ -8,7 +8,6 @@ from rest_framework.response import Response
 
 # API
 from api.serializers import UserSerializer
-import pdb
 
 
 class UserViewSet(viewsets.ModelViewSet):
