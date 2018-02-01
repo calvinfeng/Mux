@@ -109,3 +109,26 @@ CHANNEL_LAYERS = {
     }
 }
 ```
+
+Notice that `routing.channel_routing` is a file we create, `routing.py`
+
+```python
+channel_routing = [
+    route('websocket.receive', ws_message)
+]
+```
+
+> In the example above we used the in-memory channel layer implementation as our default channel layer. This just stores
+> all the channel data in a dict in memory, and so isn't actually cross-process; it only works inside runserver, as that
+> runs the interface and worker servers in different threads inside the same process. When you deploy to production,
+> you'll need to use a channel layer like the Redis backend asgi_redis that works cross-process.
+
+Install `asgi_redis`
+```
+pip install asgi_redis
+```
+
+Install Redis on Ubuntu
+```
+sudo apt-get install redis-server
+```
