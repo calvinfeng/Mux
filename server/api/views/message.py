@@ -13,4 +13,4 @@ class MessageViewSet(viewsets.ModelViewSet):
     """API endpoint that allows users to be viewed"""
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    search_field = ['author', 'body']
+    search_field = ['author', 'body', 'room']

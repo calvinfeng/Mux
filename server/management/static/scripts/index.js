@@ -1,5 +1,5 @@
-const socket = new WebSocket("ws://" + window.location.host);
-const id = Math.random();
+const username = "calvinfeng"
+const socket = new WebSocket("ws://" + window.location.host + "/C3PO/?username=" + username);
 
 socket.onmessage = function(e) {
     console.log(JSON.parse(e.data));
@@ -7,10 +7,7 @@ socket.onmessage = function(e) {
 
 socket.onopen = function(e) {
     setInterval(function() {
-        socket.send(JSON.stringify({
-            user_id: id,
-            message: "Hello"
-        }));
+        socket.send("Hello");
     }, 1000);
 };
 

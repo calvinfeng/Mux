@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     'channels'
 ]
 
+REST_FRAMEWORK = {
+   'DEFAULT_AUTHENTICATION_CLASSES': ('api.authentication.AuthenticationClass',)
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
