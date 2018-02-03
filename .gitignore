@@ -1,3 +1,5 @@
 *.pyc
 node_modules/
 environment/
+bundle.js
+bundle.js.map
