@@ -18,7 +18,7 @@ class Application extends React.Component {
   }
 
   componentDidMount() {
-    this.ws = new WebSocket("ws://" + window.location.host + "/C3PO/?username=" + this.state.username);
+    this.ws = new WebSocket("ws://" + window.location.host + "/chat/C3PO/?username=" + this.state.username);
     this.ws.onmessage = this.handleMessage;
     this.ws.onopen = this.handleOpen;
   }
@@ -33,7 +33,7 @@ class Application extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.ws.send(this.state.message);
+    this.ws.send(JSON.stringify({ message: this.state.message}));
   }
 
   createTextFieldChangeHandler = (fieldName) => {
