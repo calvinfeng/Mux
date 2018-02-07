@@ -1,6 +1,5 @@
-from channels.generic.websockets import JsonWebsocketConsumer
+from channels.generic.websockets import JsonWebsocketConsumer, WebsocketDemultiplexer
 from urlparse import parse_qs
-import pdb
 
 
 class MessageJSONConsumer(JsonWebsocketConsumer):
@@ -39,3 +38,24 @@ class MessageJSONConsumer(JsonWebsocketConsumer):
         """
         if 'room_name' in kwargs:
             print 'Client has disconnected from %s' % kwargs['room_name']
+
+
+class EchoJSONConsumer(JsonWebsocketConsumer):
+    def connect(self, message, multiplexer, **kwargs):
+        # Send data with the multiplexer
+        multiplexer.send({'status': "I just connected!"})
+
+    def disconnect(self, message, multiplexer, **kwargs):
+        print ("Stream %s is closed" % multiplexer.stream)
+
+    def receive(self, content, multiplexer, **kwargs):
+        # Simple echo
+        multiplexer.send({"original_message": content})
+
+
+class Demultiplexer(WebsocketDemultiplexer):
+    """Write your JSON consumers here: {stream_name: consumer}"""
+    consumers = {
+        'echo': EchoJSONConsumer,
+        'message': MessageJSONConsumer,
+    }
