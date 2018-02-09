@@ -6,6 +6,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import uuid from 'uuid';
 
 
 class Application extends React.Component {
@@ -63,7 +64,7 @@ class Application extends React.Component {
 
   get messages() {
     return this.state.payloads.map((payload) => {
-      return <p>Room {payload.room}: {payload.username} said {payload.message}</p>;
+      return <p key={uuid()}>Room {payload.room}: {payload.username} said {payload.message}</p>;
     });
   }
 

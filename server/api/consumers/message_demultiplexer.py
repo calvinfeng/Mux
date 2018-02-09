@@ -15,3 +15,7 @@ class MessageDemultiplexer(WebsocketDemultiplexer):
         """
         print "Client is hitting Message demultiplexer with following kwargs: %s" % kwargs
         return ['message-update']
+
+    def receive(self, content, **kwargs):
+        print 'Message demultiplexer is receiving: %s' % content
+        super(MessageDemultiplexer, self).receive(content, **kwargs)
