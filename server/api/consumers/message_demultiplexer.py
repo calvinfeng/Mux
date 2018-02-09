@@ -10,7 +10,8 @@ class MessageDemultiplexer(WebsocketDemultiplexer):
         'message-stream': MessageBinding.consumer,
     }
 
-    def connection_groups(self):
+    def connection_groups(self, **kwargs):
         """Returns a list of groups to put people in when they are connected as consumer
         """
+        print "Client is hitting Message demultiplexer with following kwargs: %s" % kwargs
         return ['message-update']

@@ -18,22 +18,39 @@ class Application extends React.Component {
   }
 
   componentDidMount() {
-    this.ws = new WebSocket("ws://" + window.location.host + "/chat/C3PO/?username=" + this.state.username);
+    this.ws = new WebSocket("ws://" + window.location.host + "/demultiplex/C3PO/?username=" + this.state.username);
+    this.eavesdropWS = new WebSocket("ws://" + window.location.host + "/eavesdrop/C3PO/?username=" + this.state.username);
     this.ws.onmessage = this.handleMessage;
+    this.eavesdropWS.onmessage = this.handleEavesdropMessage;
     this.ws.onopen = this.handleOpen;
+    this.eavesdropWS.onopen = this.handleOpen;
   }
 
   handleOpen = (e) => {
     this.setState({ connected: true });
-  }
+  };
+
+  handleEavesdropMessage = (e) => {
+    console.log('Eavesdropping shits', e.data);
+  };
 
   handleMessage = (e) => {
     this.setState({ payloads: this.state.payloads.concat([JSON.parse(e.data)]) });
-  }
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.ws.send(JSON.stringify({ message: this.state.message}));
+    this.ws.send(JSON.stringify({
+      stream: 'message-stream',
+      payload: {
+        action: 'create',
+        data: {
+          message: this.state.message,
+          username: this.state.username,
+          room: this.state.room
+        }
+      }
+    }));
   }
 
   createTextFieldChangeHandler = (fieldName) => {
@@ -46,7 +63,7 @@ class Application extends React.Component {
 
   get messages() {
     return this.state.payloads.map((payload) => {
-      return <p>Room {payload.room}: {payload.username} said {payload.text}</p>;
+      return <p>Room {payload.room}: {payload.username} said {payload.message}</p>;
     });
   }
 
